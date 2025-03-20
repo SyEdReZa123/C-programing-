@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int is_valid_web_address(const char web[]) {
+    if (strncmp(web, "www.", 4) != 0) {
+        return 0; //  start "www."
+    }
+
+    const char *rest = web + 4;
+    int len = strlen(rest);
+    if (len == 0 || rest[0] == '.' || rest[len - 1] == '.') {
+        return 0; // Invalid 
+    }
+
+    int i;
+    for (i = 0; rest[i] != '\0'; i++) {
+        if (!isalnum(rest[i]) && rest[i] != '.' && rest[i] != '-') {
+            return 0; // Invalid character found
+        }
+    }
+
+    return 1; // Valid web address
+}
+
+int main() {
+    int n;
+    printf("Enter number of Web addresses:\n");
+    scanf("%d", &n);
+    getchar(); // Consume newline
+
+    int i;
+    for (i = 1; i <= n; i++) {
+        char input[1000];
+        fgets(input, sizeof(input), stdin);
+        input[strcspn(input, "\n")] = '\0'; // Remove newline
+
+        if (is_valid_web_address(input)) {
+            printf("Valid Web, %d\n", i);
+        } else {
+            printf("Invalid, %d\n", i);
+        }
+    }
+
+    return 0;
+}
